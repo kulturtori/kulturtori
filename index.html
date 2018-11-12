@@ -136,16 +136,6 @@
             text.style.display = "block"
           });          
         }  
-        
-        
-        function controls(inside, eventfunction) {
-          var controlUI = document.createElement('div');
-          controlDiv.appendChild(controlUI);
-          var controlText = document.createElement('div');
-          controlText.innerHTML = inside;
-          controlUI.appendChild(controlText);
-          controlUI.addEventListener('click', eventfunction);    
-        }
         function initMap() {
           var center = {lat: 45.328979, lng: 14.457664};
           var map = new google.maps.Map(document.getElementById('map'), {
