@@ -102,48 +102,7 @@
       </div>
     </div>
     <div id="map"></div>
-    <script>
-
-        function CenterControl(controlDiv, map) {
-        var controlUI = document.createElement('div');
-        controlDiv.appendChild(controlUI);
-        var controlText = document.createElement('div');
-        controlText.innerHTML = '<img src ="options.png">';
-        controlUI.appendChild(controlText);
-        controlUI.addEventListener('click', function() {
-          options()
-        });
-        }
-        function RemoveControl(controlDiv,map) {
-          var controlUI = document.createElement('div');
-          controlDiv.appendChild(controlUI);
-          var controlText = document.createElement('div');
-          controlText.innerHTML = '<img src = "X.png" id ="remove">';
-          controlUI.appendChild(controlText);
-          controlUI.addEventListener('click', function() {
-            var directionsDisplay = new google.maps.DirectionsRenderer();
-            directionsDisplay.setMap(null)
-            initMap()
-          });          
-        }
-        /*function TextControl(controlDiv,map) {
-          var controlUI = document.createElement('div');
-          controlDiv.appendChild(controlUI);
-          var controlText = document.createElement('div');
-          controlText.innerHTML = '<img src = "text.png">';
-          controlUI.appendChild(controlText);
-          controlUI.addEventListener('click', function() {
-            var text = document.getElementById("text")
-            text.style.display = "block"
-          });          
-        }  */
-
-        /*controls('<img src = "text.png">', textControlDiv, map, function() {
-            var text = document.getElementById("text")
-            text.style.display = "block"
-          })*/
-        
-        
+    <script>           
         function controls(inside, controlDiv, map, eventfunction) {
           var controlUI = document.createElement('div');
           controlDiv.appendChild(controlUI);
@@ -165,11 +124,16 @@
 
 
         var centerControlDiv = document.createElement('div');
-        var centerControl = new CenterControl(centerControlDiv, map);
+        var centerControl = new controls('<img src ="options.png">', centerControlDiv, map, options());
         centerControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
+
         var removeControlDiv = document.createElement('div')
-        var removeControl = new RemoveControl(removeControlDiv, map)
+        var removeControl = new controls('<img src = "X.png" id ="remove">', removeControlDiv, map, function() {
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay.setMap(null)
+            initMap()
+          })
         removeControlDiv.index = 1
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
         
