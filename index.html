@@ -126,7 +126,7 @@
             initMap()
           });          
         }
-        function TextControl(controlDiv,map) {
+        /*function TextControl(controlDiv,map) {
           var controlUI = document.createElement('div');
           controlDiv.appendChild(controlUI);
           var controlText = document.createElement('div');
@@ -136,7 +136,12 @@
             var text = document.getElementById("text")
             text.style.display = "block"
           });          
-        }  
+        }  */
+
+        controls('<img src = "text.png">', function() {
+            var text = document.getElementById("text")
+            text.style.display = "block"
+          })
         
         
         function controls(inside, eventfunction) {
