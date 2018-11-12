@@ -102,8 +102,43 @@
       </div>
     </div>
     <div id="map"></div>
-    <script>           
-        function controls(inside, controlDiv, map, eventfunction) {
+    <script>
+        function CenterControl(controlDiv, map) {
+        var controlUI = document.createElement('div');
+        controlDiv.appendChild(controlUI);
+        var controlText = document.createElement('div');
+        controlText.innerHTML = '<img src ="options.png">';
+        controlUI.appendChild(controlText);
+        controlUI.addEventListener('click', function() {
+          options()
+        });
+        }
+        function RemoveControl(controlDiv,map) {
+          var controlUI = document.createElement('div');
+          controlDiv.appendChild(controlUI);
+          var controlText = document.createElement('div');
+          controlText.innerHTML = '<img src = "X.png" id ="remove">';
+          controlUI.appendChild(controlText);
+          controlUI.addEventListener('click', function() {
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay.setMap(null)
+            initMap()
+          });          
+        }
+        function TextControl(controlDiv,map) {
+          var controlUI = document.createElement('div');
+          controlDiv.appendChild(controlUI);
+          var controlText = document.createElement('div');
+          controlText.innerHTML = '<img src = "text.png">';
+          controlUI.appendChild(controlText);
+          controlUI.addEventListener('click', function() {
+            var text = document.getElementById("text")
+            text.style.display = "block"
+          });          
+        }  
+        
+        
+        function controls(inside, eventfunction) {
           var controlUI = document.createElement('div');
           controlDiv.appendChild(controlUI);
           var controlText = document.createElement('div');
@@ -120,23 +155,16 @@
             disableDefaultUI: true
         });
         var centerControlDiv = document.createElement('div');
-        var centerControl = new controls('<img src ="options.png">', centerControlDiv, map, options());
+        var centerControl = new CenterControl(centerControlDiv, map);
         centerControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
         var removeControlDiv = document.createElement('div')
-        var removeControl = new controls('<img src = "X.png" id ="remove">', removeControlDiv, map, function() {
-            var directionsDisplay = new google.maps.DirectionsRenderer();
-            directionsDisplay.setMap(null)
-            initMap()
-          })
+        var removeControl = new RemoveControl(removeControlDiv, map)
         removeControlDiv.index = 1
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
         
         var textControlDiv = document.createElement('div')
-        var textControl = new controls('<img src = "text.png">', textControlDiv, map, function() {
-            var text = document.getElementById("text")
-            text.style.display = "block"
-          })
+        var textControl = new TextControl(textControlDiv, map)
         textControlDiv.index = 1
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(textControlDiv);
         var perugia = {lat: 43.1122, lng: 12.38878};
