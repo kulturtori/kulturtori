@@ -103,7 +103,6 @@
     </div>
     <div id="map"></div>
     <script>
-
         function CenterControl(controlDiv, map) {
         var controlUI = document.createElement('div');
         controlDiv.appendChild(controlUI);
@@ -126,7 +125,7 @@
             initMap()
           });          
         }
-        /*function TextControl(controlDiv,map) {
+        function TextControl(controlDiv,map) {
           var controlUI = document.createElement('div');
           controlDiv.appendChild(controlUI);
           var controlText = document.createElement('div');
@@ -136,24 +135,7 @@
             var text = document.getElementById("text")
             text.style.display = "block"
           });          
-        }  */
-
-        /*controls('<img src = "text.png">', textControlDiv, map, function() {
-            var text = document.getElementById("text")
-            text.style.display = "block"
-          })*/
-        
-        
-        function controls(inside, controlDiv, map, eventfunction) {
-          var controlUI = document.createElement('div');
-          controlDiv.appendChild(controlUI);
-          var controlText = document.createElement('div');
-          controlText.innerHTML = inside;
-          controlUI.appendChild(controlText);
-          controlUI.addEventListener('click', eventfunction);    
-        }
-
-
+        }  
         function initMap() {
           var center = {lat: 45.328979, lng: 14.457664};
           var map = new google.maps.Map(document.getElementById('map'), {
@@ -162,8 +144,6 @@
             gestureHandling: 'greedy',
             disableDefaultUI: true
         });
-
-
         var centerControlDiv = document.createElement('div');
         var centerControl = new CenterControl(centerControlDiv, map);
         centerControlDiv.index = 1;
@@ -174,14 +154,9 @@
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
         
         var textControlDiv = document.createElement('div')
-        var textControl = new controls('<img src = "text.png">', textControlDiv, map, function() {
-            var text = document.getElementById("text")
-            text.style.display = "block"
-          })
+        var textControl = new TextControl(textControlDiv, map)
         textControlDiv.index = 1
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(textControlDiv);
-
-
         var perugia = {lat: 43.1122, lng: 12.38878};
         var san_gimignano = {lat: 43.467632, lng: 11.043491};
         var volterra = {lat: 43.40251, lng: 10.86152};
@@ -193,8 +168,6 @@
         var gardaCamping = {lat: 45.447687, lng: 10.701854}
         var boschetto = {lat:43.453477, lng:11.053848}
         var assisi = {lat:43.070701700, lng:12.619596600}
-
-
         var text = document.getElementById("text")
         var textback = document.getElementById("textback")
         textback.onclick = function() {
