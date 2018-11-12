@@ -138,13 +138,13 @@
           });          
         }  */
 
-        controls('<img src = "text.png">', function() {
+        controls('<img src = "text.png">', textControlDiv, map, function() {
             var text = document.getElementById("text")
             text.style.display = "block"
           })
         
         
-        function controls(inside, eventfunction) {
+        function controls(inside, controlDiv, map, eventfunction) {
           var controlUI = document.createElement('div');
           controlDiv.appendChild(controlUI);
           var controlText = document.createElement('div');
