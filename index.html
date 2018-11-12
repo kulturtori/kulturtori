@@ -65,7 +65,6 @@
        #napoktext {
          font-size: 4vmin
        }
-
     </style>
   </head>
   <body>
@@ -104,6 +103,7 @@
     </div>
     <div id="map"></div>
     <script>
+
         function CenterControl(controlDiv, map) {
         var controlUI = document.createElement('div');
         controlDiv.appendChild(controlUI);
@@ -114,8 +114,6 @@
           options()
         });
         }
-
-
         function RemoveControl(controlDiv,map) {
           var controlUI = document.createElement('div');
           controlDiv.appendChild(controlUI);
@@ -128,8 +126,6 @@
             initMap()
           });          
         }
-
-
         function TextControl(controlDiv,map) {
           var controlUI = document.createElement('div');
           controlDiv.appendChild(controlUI);
@@ -141,6 +137,16 @@
             text.style.display = "block"
           });          
         }  
+        
+        
+        function controls(inside, eventfunction) {
+          var controlUI = document.createElement('div');
+          controlDiv.appendChild(controlUI);
+          var controlText = document.createElement('div');
+          controlText.innerHTML = inside;
+          controlUI.appendChild(controlText);
+          controlUI.addEventListener('click', eventfunction);    
+        }
 
 
         function initMap() {
@@ -157,7 +163,6 @@
         var centerControl = new CenterControl(centerControlDiv, map);
         centerControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
-
         var removeControlDiv = document.createElement('div')
         var removeControl = new RemoveControl(removeControlDiv, map)
         removeControlDiv.index = 1
@@ -181,6 +186,7 @@
         var boschetto = {lat:43.453477, lng:11.053848}
         var assisi = {lat:43.070701700, lng:12.619596600}
 
+
         var text = document.getElementById("text")
         var textback = document.getElementById("textback")
         textback.onclick = function() {
@@ -193,7 +199,6 @@
             map_div.style.display = "block"
           }
         }
-
         options_div = document.getElementById("options")
         options_div.style.display = "none"
         map_div = document.getElementById("map")
@@ -207,7 +212,6 @@
             map_div.style.display = "block"
           }
         }
-
         var directionsDisplay = new google.maps.DirectionsRenderer();
         var directionsService = new google.maps.DirectionsService();        
         function displayRoute(origin, destination, waypoints = []) {
