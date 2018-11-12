@@ -138,10 +138,10 @@
           });          
         }  */
 
-        controls('<img src = "text.png">', textControlDiv, map, function() {
+        /*controls('<img src = "text.png">', textControlDiv, map, function() {
             var text = document.getElementById("text")
             text.style.display = "block"
-          })
+          })*/
         
         
         function controls(inside, controlDiv, map, eventfunction) {
@@ -174,7 +174,10 @@
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
         
         var textControlDiv = document.createElement('div')
-        var textControl = new TextControl(textControlDiv, map)
+        var textControl = new controls('<img src = "text.png">', textControlDiv, map, function() {
+            var text = document.getElementById("text")
+            text.style.display = "block"
+          })
         textControlDiv.index = 1
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(textControlDiv);
 
