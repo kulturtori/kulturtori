@@ -28,7 +28,7 @@
          width : 11vh;
          height: 100%;
        }
-       img[src = "text.png"] {
+       img[src = "gps.png"] {
          width : 7vh;
          height: 100%
        }
@@ -56,15 +56,6 @@
          width: 30%;
          line-height: 5vh;
        }
-       #text {
-         display: none;
-         width: 100%;
-         overflow:  auto;
-         height: 200vh;
-       }
-       #napoktext {
-         font-size: 4vmin
-       }
     </style>
   </head>
   <body>
@@ -79,30 +70,39 @@
           <button id = "hatodik">6.nap</button>
         </div>
     </div>
-    <div id = "text">
-      <img src="backwards.png" id = "textback" onclick="text()">
-      <div id = "napoktext">
-        <b>Napok: 1.nap: Budapest-1.kemping<br>
-               2.nap: 1.kemping-Verona-Vicenza-1.kemping<br>
-               3.nap: 1.kemping-Bologna-2.kemping<br>
-               4.nap: 2.kemping-Siena-Volterra-San Gimignano-2.kemping<br>
-               5.nap: 2.kemping-Assisi-Perugia-2.kemping<br>
-               6.nap: 2.kemping-Budapest
-        </b>
-        <br>
-        <br>
-        <br>
-        <b>
-          Tájak/országok: 1.nap: Szlovénia<br>
-                          2.nap: Veneto<br>
-                          3.nap: Emilia Romagna<br>
-                          4.nap:Toscana<br>
-                          5.nap:Umbria<br>
-        </b>
-      </div>
-    </div>
     <div id="map"></div>
-    <script>           
+    <script>
+        
+
+        function geoLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+
+              var currentPosMarker = new google.maps.Marker({
+                position: pos,
+                icon: 'current.png',
+                map:map
+              })
+              map.setCenter(pos);
+            }, function() {
+              handleLocationError(true, infoWindow, map.getCenter());
+            });
+          } else {
+            handleLocationError(false, infoWindow, map.getCenter());
+          }
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+          infoWindow.setPosition(pos);
+          infoWindow.setContent(browserHasGeolocation ?
+                                'Probléma lépett fel, nem engedélyezted a helymeghatározást?');
+          infoWindow.open(map);
+        }
+
         function controls(inside, controlDiv, map, eventfunction) {
           var controlUI = document.createElement('div');
           controlDiv.appendChild(controlUI);
@@ -137,13 +137,10 @@
         removeControlDiv.index = 1
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
         
-        var textControlDiv = document.createElement('div')
-        var textControl = new controls('<img src = "text.png">', textControlDiv, map, function() {
-            var text = document.getElementById("text")
-            text.style.display = "block"
-          })
-        textControlDiv.index = 1
-        map.controls[google.maps.ControlPosition.TOP_CENTER].push(textControlDiv);
+        var gpsControlDiv = document.createElement('div')
+        var gpsControl = new controls('<img src = "gps.png">', gpsControlDiv, map, geoLocation())
+        gpsControlDiv.index = 1
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(gpsControlDiv);
 
 
         var perugia = {lat: 43.1122, lng: 12.38878};
@@ -158,19 +155,6 @@
         var boschetto = {lat:43.453477, lng:11.053848}
         var assisi = {lat:43.070701700, lng:12.619596600}
 
-
-        var text = document.getElementById("text")
-        var textback = document.getElementById("textback")
-        textback.onclick = function() {
-          if (text.style.display == "none"){
-            text.style.display = "block";
-            map_div.style.display = "none"
-          }
-          else {
-            text.style.display = "none";
-            map_div.style.display = "block"
-          }
-        }
         options_div = document.getElementById("options")
         options_div.style.display = "none"
         map_div = document.getElementById("map")
@@ -303,18 +287,6 @@
         function remove() {
           directionsDisplay.setMap(null)
           initMap()
-        }
-            
-        var text = document.getElementById("text")
-        function text() {
-          if (text.style.display == "none"){
-            text.style.display = "block";
-            map_div.style.display = "none"
-          }
-          else {
-            text.style.display = "none";
-            map_div.style.display = "block"
-          }
         }
     </script>   
   </footer>
