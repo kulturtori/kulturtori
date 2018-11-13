@@ -162,7 +162,7 @@
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
         
         var gpsControlDiv = document.createElement('div')
-        var textControl = new mapControls('<img src = "text.png">' ,gpsControlDiv, map, function() {
+        var gpsControl = new mapControls('<img src = "text.png">' ,gpsControlDiv, map, function() {
             //gps
             gpsControl()
           })
