@@ -103,39 +103,19 @@
     </div>
     <div id="map"></div>
     <script>
-        function CenterControl(controlDiv, map) {
-        var controlUI = document.createElement('div');
-        controlDiv.appendChild(controlUI);
-        var controlText = document.createElement('div');
-        controlText.innerHTML = '<img src ="options.png">';
-        controlUI.appendChild(controlText);
-        controlUI.addEventListener('click', function() {
-          options()
-        });
-        }
-        function RemoveControl(controlDiv,map) {
+
+
+        // Klikkelhető dolgok létrehozása a térképen
+        function mapControls(inside, controlDiv, map, onclickFunction) {
           var controlUI = document.createElement('div');
           controlDiv.appendChild(controlUI);
           var controlText = document.createElement('div');
-          controlText.innerHTML = '<img src = "X.png" id ="remove">';
+          controlText.innerHTML = inside;
           controlUI.appendChild(controlText);
-          controlUI.addEventListener('click', function() {
-            var directionsDisplay = new google.maps.DirectionsRenderer();
-            directionsDisplay.setMap(null)
-            initMap()
-          });          
+          controlUI.addEventListener('click', onclickFunction)
         }
-        function TextControl(controlDiv,map) {
-          var controlUI = document.createElement('div');
-          controlDiv.appendChild(controlUI);
-          var controlText = document.createElement('div');
-          controlText.innerHTML = '<img src = "text.png">';
-          controlUI.appendChild(controlText);
-          controlUI.addEventListener('click', function() {
-            var text = document.getElementById("text")
-            text.style.display = "block"
-          });          
-        }  
+
+        // Térkép meghívása(google maps api szerint)
         function initMap() {
           var center = {lat: 45.328979, lng: 14.457664};
           var map = new google.maps.Map(document.getElementById('map'), {
@@ -144,19 +124,55 @@
             gestureHandling: 'greedy',
             disableDefaultUI: true
         });
+
+        function gpsControl() {
+          if(navigator.geolocation) {
+            currentPos = navigator.geolocation.getCurrentPosition(showposition)
+          }
+          else {
+            alert("visszautasítottad a kérést vagy nem támogatott a geolocation, sorry")
+          }
+        }
+
+        function showposition(position) {
+          var currentPosMarker = new google.maps.Marker({
+            position: {lat: position.coords.latitude, lng: position.coords.longitude},
+            ///icon: "gps.png",
+            map: map
+          })
+        }
+
+
+
+
+        // Klikkelhető dolgok létrehozása
         var centerControlDiv = document.createElement('div');
-        var centerControl = new CenterControl(centerControlDiv, map);
+        var centerControl = new mapControls('<img src ="options.png">', centerControlDiv, map, function() {
+          options()
+        });
         centerControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
         var removeControlDiv = document.createElement('div')
-        var removeControl = new RemoveControl(removeControlDiv, map)
+        var removeControl = new mapControls('<img src = "X.png" id ="remove">' ,removeControlDiv, map, function() {
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay.setMap(null)
+            initMap()
+          })
         removeControlDiv.index = 1
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
         
-        var textControlDiv = document.createElement('div')
-        var textControl = new TextControl(textControlDiv, map)
-        textControlDiv.index = 1
-        map.controls[google.maps.ControlPosition.TOP_CENTER].push(textControlDiv);
+        var gpsControlDiv = document.createElement('div')
+        var textControl = new mapControls('<img src = "text.png">' ,gpsControlDiv, map, function() {
+            //gps
+            gpsControl()
+          })
+        gpsControlDiv.index = 1
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(gpsControlDiv);
+
+
+
+
+        // koordináták
         var perugia = {lat: 43.1122, lng: 12.38878};
         var san_gimignano = {lat: 43.467632, lng: 11.043491};
         var volterra = {lat: 43.40251, lng: 10.86152};
@@ -168,6 +184,11 @@
         var gardaCamping = {lat: 45.447687, lng: 10.701854}
         var boschetto = {lat:43.453477, lng:11.053848}
         var assisi = {lat:43.070701700, lng:12.619596600}
+
+
+
+
+        //klikkelhető dolgok klikkelése
         var text = document.getElementById("text")
         var textback = document.getElementById("textback")
         textback.onclick = function() {
@@ -193,6 +214,9 @@
             map_div.style.display = "block"
           }
         }
+
+
+        // útvonalak(google maps api szerint)
         var directionsDisplay = new google.maps.DirectionsRenderer();
         var directionsService = new google.maps.DirectionsService();        
         function displayRoute(origin, destination, waypoints = []) {
@@ -223,7 +247,9 @@
             }
         });
         }
-        
+
+
+        // útvonalak kiválasztása
         elso = document.getElementById("elso")
         elso.onclick = function() {
           displayRoute(budapest, gardaCamping)
@@ -259,6 +285,8 @@
           initMap()
         }
         
+
+        // markerek a helyeken
         createMarker(budapest, "");
         createMarker(san_gimignano, "<h5>San Gimignano</h5><h6>Szép Emma,Varga Pál Patrik/Lendvai Máté,Draskóczy Áron</h6>");
         createMarker(volterra, "<h5>Volterra</h5><h6>Kostyál Csaba,Láda-Hartyáni Dorottya/Burai-Huber Marci, Répássy Péter</h6>")
@@ -294,6 +322,8 @@
   </body>
   <footer>
     <script>
+
+        //nem tudom miért, de csak így működött, szóval így hagytam
         options_div = document.getElementById("options")
         options_div.style.display = "none"
         map_div = document.getElementById("map")
